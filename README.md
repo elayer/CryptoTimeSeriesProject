@@ -1,6 +1,7 @@
 ## Cryptocurrency Time Series Modeling Project - Overview:
 
-* Scraped roughly two hundred thousand reviews from Steam on the game <i>'Elden Ring'</i>. 
+* Created functions to automatically scrape Yahoo! Finance cryptocurrency tickers that the user chooses, collecting data from the current day back to 
+January 1st, 2017. 
 
 * Tokenized the review text to conduct N-Gram analysis, create word clouds, and construct data to be fed into NLP models (namely Sentiment Analysis).
 
