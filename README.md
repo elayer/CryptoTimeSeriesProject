@@ -66,9 +66,9 @@ Some noteable findings from performing exploratory data analysis can be seen bel
 
 I found words that primarily distinguish between positive and negative reviews dealt with screen ultrawide support and performance issues such as crashes. The last picture looks at the LDA results chart, with one topic being comprised of positive comments about the game itself. The second topic comprises mainly of words related to the performance of the game and frame rate issues. The third topic composes primarily of reviews resenting the game's difficulty.
 
-![alt text](https://github.com/elayer/Steam-Elden-Ring-Reviews-Project/blob/main/bigrams_picture_2.png "BiGrams Counts")
-![alt text](https://github.com/elayer/Steam-Elden-Ring-Reviews-Project/blob/main/chi2_picture.png "Chi2 Influential Words")
-![alt text](https://github.com/elayer/Steam-Elden-Ring-Reviews-Project/blob/main/lda_picture_4.png "LDA Topic Example")
+![alt text](https://github.com/elayer/CryptoTimeSeriesProject/blob/main/CryptoAppTopPage.png "StreamLit App Frontpage")
+![alt text](https://github.com/elayer/CryptoTimeSeriesProject/blob/main/BTC-USD_Close_pred_plot.png "BTC Auto ARIMA Model")
+![alt text](https://github.com/elayer/CryptoTimeSeriesProject/blob/main/examplecandlestick.png "BTC Candlestick Plot")
 
 With the most relevant terms and reviews left over, I think we have found the most prevalent topics in the reviews corpus. Those three being positive elements of the game, resentful reviews aimed at the game's difficulty, and the performance issues the game has. Therefore, forcusing on the areas of improvement, the game could perhaps allow for adjustment of difficulty, as well as work on ameliorating the frame rate and other performance related problems.
 
