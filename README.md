@@ -3,19 +3,20 @@
 * Created functions to automatically scrape Yahoo! Finance cryptocurrency tickers that the user chooses, collecting data from the current day back to 
 January 1st, 2017. 
 
-* Tokenized the review text to conduct N-Gram analysis, create word clouds, and construct data to be fed into NLP models (namely Sentiment Analysis).
+* Explored various cryptocurrency trends and their possible influence by Russia's invasion of Ukraine.
 
-* To perform Sentiment Classification, I began model building by using Naive Bayes, SGD Classifier and Logistic Regression. Following this, I built a deep learning PyTorch model utilizing HuggingFace transformers. Here, I used the RoBERTa model.
+* Using BTC data (BitCoin), explored various time series algorithms, such as AR, MA, ARCH and ARIMA to investigate the best model to graph the data. Eventually found that utilizing exogenous data with Auto ARIMA generates models that follow the data very closely.
 
-* Lastly, to analyze the topics of discussion among the apps to track down potential areas of game improvement and reception of the game itself, I performed 
-LDA (Latent Dirichlet Analysis) and LSA (Latent Semantic Analysis) to extract topic information and key distinguishing words in the text corpus.
+* As a follow up, I then made an LSTM model with PyTorch to forecast cryptocurrency values.
+
+* Lastly, I constructed a StreamLit app allowing users to create Auto ARIMA and LSTM models and juxtapose their predictive power. The app allows users to choose date ranges to collect data, which crypto tickers to analyze, and from a chosen date to make predictions.
 
 
 ## Code and Resources Used:
 
 **Python Version:** 3.8.5
 
-**Packages:** numpy, pandas, requests, beautiful soup, matplotlib, seaborn, sklearn, huggingface transformers, pytorch, nltk, gensim, spacy, re
+**Packages:** numpy, pandas, requests, beautiful soup, matplotlib, seaborn, statsmodels, streamlit, pyTorch, arch, scipy, yahoo_fin, pmdarima, datetime, sklearn
 
 **Web Framework Requirements Command:** ```pip install -r requirements.txt```
 
@@ -24,83 +25,41 @@ LDA (Latent Dirichlet Analysis) and LSA (Latent Semantic Analysis) to extract to
 * Various project structure and process elements were learned from Ken Jee's YouTube series: 
 https://www.youtube.com/watch?v=MpF9HENQjDo&list=PL2zq7klxX5ASFejJj80ob9ZAnBHdz5O1t
 
-* Helpful information on how to scrap Steam reviews:
-https://andrew-muller.medium.com/scraping-steam-user-reviews-9a43f9e38c92
+* Helpful medium article on construacting an LSTM model using PyTorch:
+https://medium.com/analytics-vidhya/pytorch-lstms-for-time-series-forecasting-of-indian-stocks-8a49157da8b9
 
-* Elaborate and effective PyTorch structure and architecture nuances I learned in this Kaggle notebook from a competition I participated in to learn:
-https://www.kaggle.com/code/yasufuminakama/nbme-deberta-base-baseline-train
+* A lot of knowledge I gained from learning about time series data and models used to operate on it I learned from the following online resource:
+https://365datascience.com
 
-* LSA in Python implementation guide: 
-https://towardsdatascience.com/latent-semantic-analysis-sentiment-classification-with-python-5f657346f6a3
+## Yahoo! Finance Scraping & Functionizing:
 
-* LDA in Python implementation guide: 
-https://towardsdatascience.com/topic-modelling-in-python-with-spacy-and-gensim-dc8f7748bdbf
-
-
-## Web Scraping:
-
-Created a web scraper using Requests and Beauitful Soup. Using the Steam scraper, I obtained the following information from each record of reviews (relevant to project):
-*   Language
-*   Review
-*   Voted Up (Recommended)
-*   Votes Up
-*   Votes Funny
-*   Weighted Vote Score (helpfulness)
-*   Comment Count
-*   Steam Purchase
-*   Received for Free
-
-## Data Cleaning
-
-After collecting data, I performed several necessary text cleaning steps in order to analyze the corpus and perform EDA. I went through the following steps to clean and prepare the data:
-
-* Loaded the spacy English corpus and updated the stop words list to include /n and /t
-
-* With each review separated in a separate list, I lemmatized the text to keep only the root word and lowercased each word
-
-* Then, I only kept words that were not punctuation and were either numeric or alphabetic characters of text
-
-* Lastly, in order to maintain the integrity of the reviews, I dropped reviews that were less than 15 characters long to maintain reviews conducive to NLP algorithms. I also removed reviews more than 512 characters long for the PyTorch model to operate on the reviews correctly
+Created functions that prompt the user to enter what tickers they wish to analyze as well as between daily and business day frequency. Depending on what tickers are chosen, the function returns the following data from the earliest possible date where data exists for all tickers chosen:
+*   Returns
+*   Closing Price
+*   Volume
 
 ## EDA
-Some noteable findings from performing exploratory data analysis can be seen below. I found from looking at the Bi-Grams of the words in the reviews corpus, a lot of them primarily vaunted the game, compared Elden Ring to similar games, or were geared at pointing out performance issues. Similar sentiments can be seen in uni and tri-grams as well (in EDA notebook). The Chi2 influential term analysis graph is the most interesting to me. 
+In the first picture, along with a few other crypto tickers I have uploaded to this repo, is the plot of a cryptocurrency ticker with respect to the date when Russia invaded Ukraine. Generally, a lot of the crypto tickers have stalled since or around this time. Of course there are other factors as well that lead to cryptocurrencies losing their value, such as inflation and supply chain issues. 
 
-I found words that primarily distinguish between positive and negative reviews dealt with screen ultrawide support and performance issues such as crashes. The last picture looks at the LDA results chart, with one topic being comprised of positive comments about the game itself. The second topic comprises mainly of words related to the performance of the game and frame rate issues. The third topic composes primarily of reviews resenting the game's difficulty.
+I also include an example of predictions for BTC using Auto ARIMA with exogenous variables. This approach works far better than any simple AR or MA model had. I also include candlestick plots in the StreamLit app to analyze differences, increases and declines for the chosen ticker to analyze.
 
-![alt text](https://github.com/elayer/CryptoTimeSeriesProject/blob/main/CryptoAppTopPage.png "StreamLit App Frontpage")
+![alt text](https://github.com/elayer/CryptoTimeSeriesProject/blob/main/btc_russia.png "BTC data around Russian Invasion Date")
 ![alt text](https://github.com/elayer/CryptoTimeSeriesProject/blob/main/BTC-USD_Close_pred_plot.png "BTC Auto ARIMA Model")
 ![alt text](https://github.com/elayer/CryptoTimeSeriesProject/blob/main/examplecandlestick.png "BTC Candlestick Plot")
 
-With the most relevant terms and reviews left over, I think we have found the most prevalent topics in the reviews corpus. Those three being positive elements of the game, resentful reviews aimed at the game's difficulty, and the performance issues the game has. Therefore, forcusing on the areas of improvement, the game could perhaps allow for adjustment of difficulty, as well as work on ameliorating the frame rate and other performance related problems.
+## Model Building 
+Using the tickers chosen in unison, I set up Auto ARIMA to analyze an endogenous variable of choice using exogenous variables of choice. 
 
-## Model Building (Sentiment Classification)
-Before building any models, I transformed the text using Tfidf Vectorizer and Count Vectorizer in order to make the data trainable. 
+I followed suit for the LSTM model by giving the user the choice to choose date ranges for which to collect data, a ticker to analyze, and a date from which to make predictions.
 
-* I started model building with Naive Bayes. From here, confusion matrix results improved as I moved to using the SGD classifier, and then Logistic Regression. 
+## StreamLit Application
+This is the primary focus of the project. I allow for the user to input various parameters for both constructing an Auto ARIMA as well as LSTM models to plot predictions of cryptocurrencies using their model of choice. I include the posting of the dataframe to use in the construction of models using color to gauge the trend in value of tickers used in analysis.
 
-* I then attempted to use PyTorch with the HuggingFace Transformer library (namely, using RoBERTa) to maximize sentiment classification results. Although RoBERTA with PyTorch performed better than Logistic Regression, Logistic Regression achieved good results as well albeit the recall for non-recommended reviews being low. 
-
-
-## Model Performance (Sentiment Classification)
-The Naive Bayes, SGDClassifier, and Logistic Regression models resptively achieved improved results. I then built the PyTorch model with HuggingFace. Since training the entire model with PyTorch using just 4 Epochs and 5 folds for cross validation would have taken more than 4 days on my computer, I only used on epoch on one fold. After this, I gathered the results of the model based on only that much training.
-
-<b>(The possible labels for classification here are 0 : Non-recommended and 1 : Recommended)</b>
-
-Below are the Macro F1 Scores of each model built:
-
-* Naive Bayes: 0.48
-
-* SGD Classifier (SVM using Hinge Loss): 0.69
-
-* Logistic Regression: 0.81
-
-* RoBERTa with PyTorch: 0.87 (after only 1 epoch on 1 fold of data)
-
-With a more powerful machine, I think we can achieve a robust model knowing the granular differences between recommended and non-recommended reviews. Here is an example of some predictions made from the model using a few samples from another fold that model wasn't trained on:
-
-![alt text](https://github.com/elayer/Steam-Elden-Ring-Reviews-Project/blob/main/1foldpreds.png "Example PyTorch Predictions")
+![alt text](https://github.com/elayer/CryptoTimeSeriesProject/blob/main/CryptoAppTopPage.png "StreamLit App Top")
+![alt text](https://github.com/elayer/CryptoTimeSeriesProject/blob/main/autoarima-btc-eth%26usdt.png "Example BTC Auto ARIMA App")
+![alt text](https://github.com/elayer/CryptoTimeSeriesProject/blob/main/LSTMBTCexampleplot.png "Example BTC LSTM App")
 
 ## Future Improvements
-I came back to remove remove words from the N-gram analysis to locate more genuine phrase occurences. I was able to dig up more relevant review content to the game this way.
+I allow for the user to input some parameters for the Auto ARIMA model, but I could perhaps add more customization to this half of the application such as the max amount of AR and MA components to use within the model. 
 
-It's sometimes difficult to locate all of the insincere reviews, especially on Steam. However, I think this could lead to more elaborate and discrete topics potentially being found.
+In addition, some UI elements could also be improved if possible on Streamlit, such as how the charts from model runs are displayed on the screen.
