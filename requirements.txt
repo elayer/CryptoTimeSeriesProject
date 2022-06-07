@@ -1,0 +1,12 @@
+numpy
+pandas
+matplotlib
+plotly
+seaborn
+torch
+sklearn
+datetime
+streamlit
+pmdarima
+yfinance
+yahoo_fin
